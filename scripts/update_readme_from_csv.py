@@ -10,7 +10,6 @@ README must contain these markers:
 <!-- PROJECTS_TABLE:END -->
 """
 
-from __future__ import annotations
 import argparse
 import csv
 import datetime as dt
