@@ -72,6 +72,7 @@ def build_table(rows: List[Dict[str, str]]) -> str:
         lines.append(f"| {project_md} | {date} | {tools} | {tags} | {desc} |")
 
     now = dt.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+    lines.append("")
     lines.append(f"_Last updated: {now}_")
     return "\n".join(lines)
 
