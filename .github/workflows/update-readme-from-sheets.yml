@@ -1,28 +1,52 @@
 name: Update README from Google Sheets
+
 on:
-  schedule: [{ cron: "0 15 * * *" }]   # 08:00 PT daily
+  schedule:
+    - cron: "0 15 * * *"   # 08:00 PT daily
   workflow_dispatch: {}
+
 permissions:
   contents: write
+
 env:
   SHEETS_CSV_URL: ${{ secrets.SHEETS_CSV_URL }}
+
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
+
       - name: Download CSV
+        shell: bash
         run: |
+          set -euo pipefail
+          echo "Downloading CSV from Google Sheets..."
           curl -L "$SHEETS_CSV_URL" -o projects.csv
-          head -n 2 projects.csv
+          echo "Preview of downloaded file:"
+          head -n 5 projects.csv
+          if grep -q "<!DOCTYPE html>" projects.csv; then
+            echo "ERROR: Got HTML instead of CSV. Check SHEETS_CSV_URL." >&2
+            exit 1
+          fi
+
       - uses: actions/setup-python@v5
-        with: { python-version: "3.x" }
+        with:
+          python-version: "3.x"
+
       - name: Generate README section
-        run: python scripts/update_readme_from_csv.py
-      - name: Commit changes
+        shell: bash
         run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
+          set -euo pipefail
+          python scripts/update_readme_from_csv.py -v
+
+      - name: Commit changes (if any)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git diff --quiet README.md; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add README.md
@@ -30,3 +54,4 @@ jobs:
             git push
           else
             echo "No changes to commit"
+          fi
