@@ -135,14 +135,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()#!/usr/bin/env python3
-"""
-Generate a Markdown table in README.md from a projects CSV.
-
-CSV must have headers (exact):
-Project,Date,Tools,Tags,Description,Link
-
-README must contain these markers:
-<!-- PROJECTS_TABLE:START -->
-<!-- PROJECTS_TABLE:END -->
-"""
+    main()
