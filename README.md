@@ -7,5 +7,5 @@
 |---|---|---|---|---|
 | **Example Row (delete me)** | 2025-08 | Python; Bigquery; Airflow (planned) | ETL; Cloud | Pipeline from CSV→SQL→BigQuery with validation |
 
-_Last updated: 2026-07-11 15:59 UTC_
+_Last updated: 2026-07-12 16:02 UTC_
 <!-- PROJECTS_TABLE:END -->
